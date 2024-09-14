@@ -7,12 +7,13 @@ import { PiHeartThin } from "react-icons/pi";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { BsChevronDown } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
+import DropdownMenu from "./dropdownmenu";
 
 const Header = () => {
   return (
     <div>
       <div className="text-white bg-[#222222] flex justify-center">
-        <div className=" w-[1400px] flex justify-between py-[8px] ">
+        <div className=" w-[1360px] flex justify-between py-[8px] ">
           <div className="flex gap-[30px]">
             <div className="flex items-center">
               English <GoChevronDown />
@@ -38,7 +39,7 @@ const Header = () => {
         </div>
       </div>
       <div className="py-[25px] flex justify-center">
-        <div className="w-[1400px] flex justify-between items-center">
+        <div className="w-[1360px] flex justify-between items-center">
           <div className="flex items-center border py-[10px] pl-[20px] pr-[20px] gap-[50px] ">
             <input
               type="text"
@@ -79,36 +80,44 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex py-[18px] px-[100px] justify-between border-b-solid border-b-[1px] border-b-gray-200 border-t-solid border-t-[1px] border-t-gray-200">
-        <div className="flex items-center font-[500] text-[#222] gap-[5px]">
+      <div className="flex px-[100px] justify-between border-b-solid border-b-[1px] border-b-gray-200 border-t-solid border-t-[1px] border-t-gray-200">
+        <div className="flex items-center font-[500] text-[#222] gap-[5px] cursor-pointer">
           BROWSE CATEGORIES{" "}
           <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
         </div>
         <ul className="flex list-none gap-[20px] font-[500] text-[#222]">
-          <li className="flex gap-[5px] items-center">
-            HOME <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
-          </li>
-          <li className="flex gap-[5px] items-center">
-            SHOP <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
-          </li>
-          <li className="flex gap-[5px] items-center">
-            PRODUCT
+          <li className="flex gap-[5px] items-center cursor-pointer py-[18px]">
+            <span className="hover-effect">HOME</span>
             <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
           </li>
-          <li className="flex gap-[5px] items-center">
-            PAGES <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
+          <li className="flex gap-[5px] items-center cursor-pointer">
+            <span className="hover-effect">SHOP</span>
+            <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
           </li>
-          <li className="flex gap-[5px] items-center">
-            BLOGS <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
+          <li className="flex gap-[5px] items-center cursor-pointer">
+            <span className="hover-effect">PRODUCT</span>
+            <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
           </li>
-          <li>BUT ALUKAS!</li>
+          <li className="flex gap-[5px] items-center cursor-pointer">
+            <span className="hover-effect">PAGES</span>
+            <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
+          </li>
+
+          <DropdownMenu
+            label="BLOGS"
+            items={["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]}
+          />
+          <li className="flex items-center">
+            <span className="hover-effect cursor-pointer">BUT ALUKAS!</span>
+          </li>
         </ul>
+
         <div className="flex gap-[25px] ">
-          <div className="flex items-center gap-[5px] font-[500] text-[#222]">
+          <div className="flex items-center gap-[5px]  text-[18px] text-[#222]">
             <BsTelephone className="w-[20px] h-[20px] text-[#464545] " />
             (+800) 1234 56
           </div>
-          <div className="flex items-center gap-[5px] font-[500] text-[#222]">
+          <div className="flex items-center gap-[5px]  text-[#222] text-[18px]">
             <IoLocationOutline className="w-[20px] h-[20px] text-[#464545]" />
             Our Stores
           </div>

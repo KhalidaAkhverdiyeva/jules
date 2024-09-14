@@ -5,3 +5,22 @@
 .placeholder-black::placeholder {
   color: rgb(85, 85, 85);
 }
+
+.hover-effect {
+  position: relative;
+}
+
+.hover-effect::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #222;
+  transition: width 0.3s ease-in-out;
+}
+
+.hover-effect:hover::after {
+  width: 100%;
+}
