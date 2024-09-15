@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3001;
 const connectDB = require("./db/dbserver");
 const path = require("path");
+const cors = require('cors');
 const blogRouter = require("../back-side/routes/blogRoutes")
 const dotenv = require('dotenv')
 
 dotenv.config()
 
+app.use(cors());
 
 app.use(express.json());
 app.use("/api/v1/blogs", blogRouter);

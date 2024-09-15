@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const bloglist = require("../models/blogSchema");
 const { ErrorHandler } = require("../utils/ErrorHandlers");
 
@@ -19,11 +20,19 @@ const getAllBlogs = async (req, res, next) => {
 
 const getBlogById = async (req, res, next) => {
     try {
-        const blogs = await bloglist.findById();
-        if (!blogs.length) {
-            return next(new ErrorHandler("No blogs found", 404));
+        const blogId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(blogId)) {
+            return next(new ErrorHandler("Invalid Blog ID format", 400));
         }
-        res.status(200).json({ success: true, blogs });
+
+        const blog = await bloglist.findById(blogId);
+
+        if (!blog) {
+            return next(new ErrorHandler("Blog not found", 404));
+        }
+
+        res.status(200).json({ success: true, blog });
     } catch (error) {
         next(error);
     }
@@ -52,6 +61,23 @@ const createBlog = async (req, res) => {
     }
 };
 
+const deleteBlog = async (req, res, next) => {
+    try {
+        const blogId = req.params.id;
+        const blog = await bloglist.findByIdAndDelete(blogId);
+
+        if (!blog) {
+            return next(new ErrorHandler("Blog not found", 404));
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Blog deleted successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-module.exports = { getAllBlogs, getBlogById, createBlog }
+module.exports = { getAllBlogs, getBlogById, createBlog, deleteBlog }

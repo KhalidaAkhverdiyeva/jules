@@ -105,7 +105,13 @@ const Header = () => {
 
           <DropdownMenu
             label="BLOGS"
-            items={["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]}
+            items={[
+              "Grid 2 columns",
+              "Grid 3 columns",
+              "Grid 4 columns",
+              "Post left sidebar ",
+              "Post right sidebar ",
+            ]}
           />
           <li className="flex items-center">
             <span className="hover-effect cursor-pointer">BUT ALUKAS!</span>
