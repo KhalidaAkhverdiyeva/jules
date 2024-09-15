@@ -39,14 +39,16 @@ const Header = () => {
         </div>
       </div>
       <div className="py-[25px] flex justify-center">
-        <div className="w-[1360px] flex justify-between items-center">
-          <div className="flex items-center border py-[10px] pl-[20px] pr-[20px] gap-[50px] ">
-            <input
-              type="text"
-              placeholder="Search Products"
-              className="text-black outline-none placeholder-black"
-            />
-            <IoSearchOutline className="text-[#484848] w-[20px] h-[20px]" />
+        <div className="w-[1360px] flex justify-between items-center ">
+          <div className=" w-[560px] ">
+            <div className="flex items-center border py-[10px] pl-[20px] pr-[20px] gap-[50px] w-[290px] justify-between">
+              <input
+                type="text"
+                placeholder="Search Products"
+                className="text-black outline-none placeholder-black"
+              />
+              <IoSearchOutline className="text-[#484848] w-[20px] h-[20px]" />
+            </div>
           </div>
           <div>
             <svg
@@ -63,7 +65,7 @@ const Header = () => {
               ></path>{" "}
             </svg>
           </div>
-          <div className="flex gap-[10px] items-center">
+          <div className="flex gap-[10px] items-center justify-end w-[560px]">
             <CiUser className="w-[28px] h-[28px] text-black" />
             <div className="relative inline-block">
               <PiHeartThin className="w-[28px] h-[28px] text-black" />

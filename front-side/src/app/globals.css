@@ -24,3 +24,11 @@
 .hover-effect:hover::after {
   width: 100%;
 }
+
+.text-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

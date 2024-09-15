@@ -26,7 +26,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, label }) => {
 
   return (
     <li
-      className="relative flex gap-2 items-center cursor-pointer"
+      className="relative flex gap-2 items-center cursor-pointer z-50"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={parentRef}

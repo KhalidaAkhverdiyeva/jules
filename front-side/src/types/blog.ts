@@ -3,6 +3,7 @@
     title: string;
     author: string;
     date: string;
-    imageUrl: string;
-    description:string
+    image: string;
+    description:string;
+    createdAt: string;
   }

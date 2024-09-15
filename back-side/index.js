@@ -10,7 +10,6 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 app.use(cors());
-
 app.use(express.json());
 app.use("/api/v1/blogs", blogRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

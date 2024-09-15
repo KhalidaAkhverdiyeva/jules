@@ -1,7 +1,7 @@
 import NewsCard from "@/components/newsCard";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   return (
     <>
       <div className="flex justify-center py-[50px]">
@@ -16,4 +16,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,16 +1,25 @@
 const mongoose = require("mongoose");
 const bloglist = require("../models/blogSchema");
 const { ErrorHandler } = require("../utils/ErrorHandlers");
+const moment = require('moment');
+
 
 
 
 const getAllBlogs = async (req, res, next) => {
     try {
         const blogs = await bloglist.find();
+
         if (!blogs.length) {
             return next(new ErrorHandler("No blogs found", 404));
         }
-        res.status(200).json({ success: true, blogs });
+
+        const formattedBlogs = blogs.map(blog => ({
+            ...blog._doc,
+            createdAt: moment(blog.createdAt).format('MMM DD, YYYY')
+        }));
+
+        res.status(200).json({ success: true, blogs: formattedBlogs });
     } catch (error) {
         next(error);
     }
@@ -40,16 +49,14 @@ const getBlogById = async (req, res, next) => {
 
 const createBlog = async (req, res) => {
     try {
-        const { title, description, author, createAt } = req.body;
-
+        const { title, description, author } = req.body;
         const uploadedFile = req.file;
 
         const newBlog = await bloglist.create({
             title,
             description,
             author,
-            createAt,
-            image: uploadedFile ? uploadedFile.path : null,
+            image: uploadedFile ? uploadedFile.path.replace(/\\/g, '/') : null,
         });
 
         return res.status(201).json({
@@ -60,6 +67,8 @@ const createBlog = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+
 
 const deleteBlog = async (req, res, next) => {
     try {
