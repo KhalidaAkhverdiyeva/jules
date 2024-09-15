@@ -2,7 +2,7 @@
 import { useRequest } from "@/http/axiosFetcher";
 import { Blog } from "@/types/blog";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
@@ -16,6 +16,7 @@ const BlogPage: React.FC = () => {
     }
   }, []);
   const { slug } = useParams();
+  const router = useRouter();
 
   const decodedSlug = decodeURIComponent(slug as string);
   const endpoint = `blogs?title=${encodeURIComponent(decodedSlug)}`;
@@ -46,39 +47,63 @@ const BlogPage: React.FC = () => {
     return <div>No blog found</div>;
   }
 
+  const currentBlog = blogs.find((b) => b.title === decodedSlug);
+  const currentIndex = blogs.indexOf(currentBlog as Blog);
+
+  const prevBlog = blogs[currentIndex - 1] || null;
+  const nextBlog = blogs[currentIndex + 1] || null;
+
+  if (!currentBlog) {
+    return <div>No blog found</div>;
+  }
+
+  const handlePrevClick = () => {
+    if (prevBlog) {
+      router.push(`/news/${encodeURIComponent(prevBlog.title)}`);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (nextBlog) {
+      router.push(`/news/${encodeURIComponent(nextBlog.title)}`);
+    }
+  };
+
   return (
     <div className="flex justify-center">
-      <div className="w-[1400px] flex flex-col justify-center items-center py-[40px] ">
-        <p className="  text-[13px] py-[2px] px-[10px] w-[60px] h-[22px] font-[500] text-white bg-[#222222]">
+      <div className="w-[1400px] flex flex-col justify-center items-center py-[40px]">
+        <p className="text-[13px] py-[2px] px-[10px] w-[60px] h-[22px] font-[500] text-white bg-[#222222]">
           NEWS
         </p>
         <h1 className="text-[40px] font-[500] text-[#222] flex justify-center">
-          {blog.title}
+          {currentBlog.title}
         </h1>
-        <div className="flex gap-[10px] justify-center ">
-          {" "}
-          <p className="text-[20px] text-[#222]">{blog.author}</p>
-          <p className="uppecase text-[20px] text-[#757575]">
-            {blog.createdAt}
+        <div className="flex gap-[10px] justify-center">
+          <p className="text-[20px] text-[#222]">{currentBlog.author}</p>
+          <p className="uppercase text-[20px] text-[#757575]">
+            {currentBlog.createdAt}
           </p>
         </div>
 
         <Image
-          src={`http://localhost:3001/${blog.detailedImg.replace(/\\/g, "/")}`}
-          alt={blog.title || "Blog Image"}
+          src={`http://localhost:3001/${currentBlog.detailedImg.replace(
+            /\\/g,
+            "/"
+          )}`}
+          alt={currentBlog.title || "Blog Image"}
           width={1170}
           height={760}
           className="py-[30px]"
         />
         <div className="px-[220px]">
           <div className="text-[18px] font-[500] text-[#222]">
-            {blog.description}
+            {currentBlog.description}
           </div>
           <div
-            className="text-[18px]  text-[#3b3a3a]"
-            dangerouslySetInnerHTML={{ __html: blog.detailedDesc }}
+            className="text-[18px] text-[#3b3a3a]"
+            dangerouslySetInnerHTML={{ __html: currentBlog.detailedDesc }}
           />
-          <div className="flex justify-between py-[30px] ">
+          <div className="flex justify-between py-[30px]">
             <div className="font-[500] text-[18px]">Tags:</div>
             <div className="flex gap-[10px] font-[500] text-[18px]">
               <div>Share:</div>
@@ -88,6 +113,22 @@ const BlogPage: React.FC = () => {
                 <FaPinterestP />
               </div>
             </div>
+          </div>
+          <div className="flex justify-between py-[30px]">
+            <button
+              onClick={handlePrevClick}
+              disabled={!prevBlog}
+              className="px-[20px] py-[10px] border border-gray-300 bg-gray-100 text-gray-800 disabled:opacity-50"
+            >
+              Prev: {prevBlog?.title || "No Previous Post"}
+            </button>
+            <button
+              onClick={handleNextClick}
+              disabled={!nextBlog}
+              className="px-[20px] py-[10px] border border-gray-300 bg-gray-100 text-gray-800 disabled:opacity-50"
+            >
+              Next: {nextBlog?.title || "No Next Post"}
+            </button>
           </div>
         </div>
       </div>

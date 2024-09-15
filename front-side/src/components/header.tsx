@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { GoChevronDown } from "react-icons/go";
 import { IoSearchOutline } from "react-icons/io5";
 import { BsTelephone } from "react-icons/bs";
@@ -10,9 +11,32 @@ import { IoLocationOutline } from "react-icons/io5";
 import DropdownMenu from "./dropdownmenu";
 
 const Header = () => {
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+    if (scrollTop > lastScrollTop) {
+      setIsHeaderVisible(false);
+    } else {
+      setIsHeaderVisible(true);
+    }
+    setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollTop]);
+
   return (
-    <div>
-      <div className="text-white bg-[#222222] flex justify-center">
+    <div
+      className={`sticky top-0 w-[100%]   z-[9999] items-center shadow-custom  transition-transform duration-300 ${
+        isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
+      <div className="text-white bg-[#222222] flex justify-center ">
         <div className=" w-[1360px] flex justify-between py-[8px] ">
           <div className="flex gap-[30px]">
             <div className="flex items-center">
@@ -38,7 +62,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="py-[25px] flex justify-center">
+      <div className="py-[25px] flex justify-center bg-white">
         <div className="w-[1360px] flex justify-between items-center ">
           <div className=" w-[560px] ">
             <div className="flex items-center border py-[10px] pl-[20px] pr-[20px] gap-[50px] w-[290px] justify-between">
@@ -82,7 +106,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex px-[100px] justify-between border-b-solid border-b-[1px] border-b-gray-200 border-t-solid border-t-[1px] border-t-gray-200">
+      <div className="flex bg-white px-[100px] justify-between border-b-solid border-b-[1px] border-b-gray-200 border-t-solid border-t-[1px] border-t-gray-200">
         <div className="flex items-center font-[500] text-[#222] gap-[5px] cursor-pointer">
           BROWSE CATEGORIES{" "}
           <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
