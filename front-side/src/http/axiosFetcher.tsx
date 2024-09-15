@@ -30,7 +30,7 @@ export function fetcher(
 }
 
 export function useRequest<Data = any, Error = any>(
-  key: TKeysOfUnion<(typeof api)[typeof module]> | (() => string | null),
+  key: string | (() => string | null), // Allow dynamic strings
   {
     method = "GET",
     module,
@@ -40,7 +40,7 @@ export function useRequest<Data = any, Error = any>(
   }: IRequestConfig,
   options: SWRConfiguration = {}
 ) {
-  const k: Key = typeof key === "function" ? key : (api[module] as any)[key];
+  const k: Key = typeof key === "function" ? key() : key;
   const fetcher = (url: string) => {
     if (cacheOnly) {
       return Promise.resolve();

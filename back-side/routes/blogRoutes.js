@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "uploads/");
@@ -14,17 +15,24 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
 const {
     getAllBlogs,
     getBlogById,
     createBlog,
-    deleteBlog
+    deleteBlog,
+    updateBlog,
 } = require("../controllers/blogController");
+
 const { ErrorMiddleware } = require("../utils/ErrorHandlers");
+
 
 router.get("/", getAllBlogs);
 router.get("/:id", getBlogById);
-router.post("/", upload.single("image"), createBlog);
+router.post("/", upload.fields([{ name: "image", maxCount: 1 }, { name: "detailedImg", maxCount: 1 },]), createBlog);
+router.put("/:id", upload.fields([{ name: 'image', maxCount: 1 }, { name: 'detailedImg', maxCount: 1 }]), updateBlog);
 router.delete("/:id", deleteBlog);
+
 router.use(ErrorMiddleware);
+
 module.exports = router;

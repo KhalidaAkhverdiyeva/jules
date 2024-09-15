@@ -49,14 +49,17 @@ const getBlogById = async (req, res, next) => {
 
 const createBlog = async (req, res) => {
     try {
-        const { title, description, author } = req.body;
-        const uploadedFile = req.file;
+        const { title, description, detailedDesc, author } = req.body;
+        const uploadedImage = req.files.image ? req.files.image[0].path.replace(/\\/g, '/') : null;
+        const uploadedDetailedImg = req.files.detailedImg ? req.files.detailedImg[0].path.replace(/\\/g, '/') : null;
 
         const newBlog = await bloglist.create({
             title,
             description,
+            detailedDesc,
             author,
-            image: uploadedFile ? uploadedFile.path.replace(/\\/g, '/') : null,
+            image: uploadedImage,
+            detailedImg: uploadedDetailedImg,
         });
 
         return res.status(201).json({
@@ -67,6 +70,7 @@ const createBlog = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 
 
 
@@ -87,6 +91,35 @@ const deleteBlog = async (req, res, next) => {
         next(error);
     }
 };
+const updateBlog = async (req, res, next) => {
+    try {
+        const blogId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(blogId)) {
+            return next(new ErrorHandler("Invalid Blog ID format", 400));
+        }
+
+        const updateData = {
+            title: req.body.title,
+            description: req.body.description,
+            detailedDesc: req.body.detailedDesc,
+            author: req.body.author,
+            image: req.files?.image ? req.files.image[0].path.replace(/\\/g, '/') : req.body.image,
+            detailedImg: req.files?.detailedImg ? req.files.detailedImg[0].path.replace(/\\/g, '/') : req.body.detailedImg
+        };
+
+        const updatedBlog = await bloglist.findByIdAndUpdate(blogId, updateData, { new: true });
+
+        if (!updatedBlog) {
+            return next(new ErrorHandler("Blog not found", 404));
+        }
+
+        res.status(200).json({ success: true, blog: updatedBlog });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-module.exports = { getAllBlogs, getBlogById, createBlog, deleteBlog }
+
+module.exports = { getAllBlogs, getBlogById, createBlog, deleteBlog, updateBlog }

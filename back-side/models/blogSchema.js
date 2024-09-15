@@ -9,11 +9,19 @@ const BlogSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    detailedDesc: {
+        type: String,
+        required: true,
+    },
     author: {
         type: String,
         required: true,
     },
     image: {
+        type: String,
+        required: false,
+    },
+    detailedImg: {
         type: String,
         required: false,
     },
