@@ -11,7 +11,7 @@ const BlogSchema = mongoose.Schema({
     },
     detailedDesc: {
         type: String,
-        required: true,
+        required: false,
     },
     author: {
         type: String,

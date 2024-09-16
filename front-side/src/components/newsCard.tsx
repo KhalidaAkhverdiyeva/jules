@@ -4,6 +4,7 @@ import React from "react";
 import { useRequest } from "@/http/axiosFetcher";
 import { Blog } from "@/types/blog";
 import Link from "next/link";
+import NewsCardSkeleton from "./newsCardSkeleton";
 
 const NewsCard = () => {
   const { data, error, isLoading } = useRequest("blogs", {
@@ -11,7 +12,12 @@ const NewsCard = () => {
     module: "devApi",
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <NewsCardSkeleton />
+      </div>
+    );
   if (error) return <div>Error loading data</div>;
 
   const blogs = data && data.blogs ? data.blogs : [];
@@ -21,8 +27,8 @@ const NewsCard = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px]">
       {blogs.map((blog: Blog) => (
-        <Link key={blog.id} href={`/news/${encodeURIComponent(blog.title)}`}>
-          <div key={blog.id} className="news-card bg-white py-[20px]">
+        <Link key={blog._id} href={`/news/${encodeURIComponent(blog.title)}`}>
+          <div key={blog._id} className="news-card bg-white py-[20px]">
             <div className="relative overflow-hidden">
               <Image
                 src={
@@ -33,6 +39,7 @@ const NewsCard = () => {
                 alt={blog.title || "Blog Image"}
                 width={320}
                 height={207}
+                priority
                 className="w-full h-auto object-cover transform transition-transform duration-500 hover:scale-110 cursor-pointer"
               />
               <p className="absolute top-[15px] left-[15px] text-[13px] py-[2px] px-[10px] font-[500] text-white bg-[#222222]">

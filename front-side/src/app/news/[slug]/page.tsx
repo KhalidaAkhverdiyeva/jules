@@ -1,4 +1,5 @@
 "use client";
+import DetailSkeleton from "@/components/detailSkeleton";
 import { useRequest } from "@/http/axiosFetcher";
 import { Blog } from "@/types/blog";
 import Image from "next/image";
@@ -7,6 +8,7 @@ import React, { useEffect } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { FaPinterestP } from "react-icons/fa";
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 const BlogPage: React.FC = () => {
   useEffect(() => {
@@ -35,7 +37,12 @@ const BlogPage: React.FC = () => {
   console.log("Decoded Slug:", decodedSlug);
   console.log("Blogs:", data?.blogs);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <DetailSkeleton />
+      </div>
+    );
   if (error) return <div>Error loading data</div>;
 
   const blogs = data?.blogs || [];
@@ -70,69 +77,77 @@ const BlogPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="w-[1400px] flex flex-col justify-center items-center py-[40px]">
-        <p className="text-[13px] py-[2px] px-[10px] w-[60px] h-[22px] font-[500] text-white bg-[#222222]">
-          NEWS
-        </p>
-        <h1 className="text-[40px] font-[500] text-[#222] flex justify-center">
-          {currentBlog.title}
-        </h1>
-        <div className="flex gap-[10px] justify-center">
-          <p className="text-[20px] text-[#222]">{currentBlog.author}</p>
-          <p className="uppercase text-[20px] text-[#757575]">
-            {currentBlog.createdAt}
+    <>
+      <div className="flex justify-center">
+        <div className="w-[1400px] flex flex-col justify-center items-center py-[40px]">
+          <p className="text-[13px] py-[2px] px-[10px] w-[60px] h-[22px] font-[500] text-white bg-[#222222]">
+            NEWS
           </p>
-        </div>
-
-        <Image
-          src={`http://localhost:3001/${currentBlog.detailedImg.replace(
-            /\\/g,
-            "/"
-          )}`}
-          alt={currentBlog.title || "Blog Image"}
-          width={1170}
-          height={760}
-          className="py-[30px]"
-        />
-        <div className="px-[220px]">
-          <div className="text-[18px] font-[500] text-[#222]">
-            {currentBlog.description}
+          <h1 className="text-[40px] font-[500] text-[#222] flex justify-center">
+            {currentBlog.title}
+          </h1>
+          <div className="flex gap-[10px] justify-center">
+            <p className="text-[20px] text-[#222]">{currentBlog.author}</p>
+            <p className="uppercase text-[20px] text-[#757575]">
+              {currentBlog.createdAt}
+            </p>
           </div>
-          <div
-            className="text-[18px] text-[#3b3a3a]"
-            dangerouslySetInnerHTML={{ __html: currentBlog.detailedDesc }}
+
+          <Image
+            src={`http://localhost:3001/${currentBlog.detailedImg.replace(
+              /\\/g,
+              "/"
+            )}`}
+            alt={currentBlog.title || "Blog Image"}
+            width={1170}
+            height={760}
+            className="py-[30px]"
           />
-          <div className="flex justify-between py-[30px]">
-            <div className="font-[500] text-[18px]">Tags:</div>
-            <div className="flex gap-[10px] font-[500] text-[18px]">
-              <div>Share:</div>
-              <div className="flex gap-[10px] items-center">
-                <FaTwitter />
-                <FaFacebookF />
-                <FaPinterestP />
+          <div className="px-[220px]">
+            <div className="text-[18px] font-[500] text-[#222]">
+              {currentBlog.description}
+            </div>
+            <div
+              className="text-[18px] text-[#3b3a3a]"
+              dangerouslySetInnerHTML={{ __html: currentBlog.detailedDesc }}
+            />
+            <div className="flex justify-between py-[30px]">
+              <div className="font-[500] text-[18px]">Tags:</div>
+              <div className="flex gap-[10px] font-[500] text-[18px]">
+                <div>Share:</div>
+                <div className="flex gap-[10px] items-center">
+                  <FaTwitter />
+                  <FaFacebookF />
+                  <FaPinterestP />
+                </div>
               </div>
             </div>
           </div>
-          <div className="flex justify-between py-[30px]">
-            <button
-              onClick={handlePrevClick}
-              disabled={!prevBlog}
-              className="px-[20px] py-[10px] border border-gray-300 bg-gray-100 text-gray-800 disabled:opacity-50"
-            >
-              Prev: {prevBlog?.title || "No Previous Post"}
-            </button>
-            <button
-              onClick={handleNextClick}
-              disabled={!nextBlog}
-              className="px-[20px] py-[10px] border border-gray-300 bg-gray-100 text-gray-800 disabled:opacity-50"
-            >
-              Next: {nextBlog?.title || "No Next Post"}
-            </button>
-          </div>
         </div>
       </div>
-    </div>
+      <div className="flex w-[100%] px-[130px] justify-between py-[20px] border-t-solid border-t-[1px] border-t-gray-300 border-b-solid border-b-[1px] border-b-gray-300">
+        <div
+          onClick={handlePrevClick}
+          className="flex justify-center gap-[15px] items-center  px-[20px] py-[10px]  text-[20px] cursor-pointer  disabled:opacity-50"
+        >
+          <GoChevronLeft className=" text-[40px] text-[#393939]" />
+          <div className="flex flex-col">
+            <span className="text-[15px] text-[#757575]">PREVIOUS</span>
+            <span className="font-[500]">{prevBlog?.title || null}</span>
+          </div>
+        </div>
+        <div
+          onClick={handleNextClick}
+          className="flex justify-center gap-[15px] items-center px-[20px] py-[10px]  text-[20px] cursor-pointer  disabled:opacity-50"
+        >
+          <div className="flex flex-col items-end">
+            <span className="text-[15px] text-[#757575]">NEXT</span>
+            <span className="font-[500]">{nextBlog?.title || null}</span>
+          </div>
+          <GoChevronRight className="text-[40px]" />
+        </div>
+      </div>
+    </>
   );
 };
 

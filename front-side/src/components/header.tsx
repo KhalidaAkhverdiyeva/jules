@@ -9,6 +9,7 @@ import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { BsChevronDown } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
 import DropdownMenu from "./dropdownmenu";
+import Link from "next/link";
 
 const Header = () => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -32,7 +33,7 @@ const Header = () => {
 
   return (
     <div
-      className={`sticky top-0 w-[100%]   z-[9999] items-center shadow-custom  transition-transform duration-300 ${
+      className={`sticky top-0 w-[100%]   z-[60] items-center shadow-custom  transition-transform duration-300 ${
         isHeaderVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -90,7 +91,10 @@ const Header = () => {
             </svg>
           </div>
           <div className="flex gap-[10px] items-center justify-end w-[560px]">
-            <CiUser className="w-[28px] h-[28px] text-black" />
+            <Link href="/dashboard">
+              <CiUser className="w-[28px] h-[28px] text-black" />
+            </Link>
+
             <div className="relative inline-block">
               <PiHeartThin className="w-[28px] h-[28px] text-black" />
               <span className="absolute top-[-5px] right-[-5px] flex items-center justify-center w-[15px] h-[15px] bg-black text-white text-xs rounded-full">
@@ -112,10 +116,13 @@ const Header = () => {
           <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
         </div>
         <ul className="flex list-none gap-[20px] font-[500] text-[#222]">
-          <li className="flex gap-[5px] items-center cursor-pointer py-[18px]">
-            <span className="hover-effect">HOME</span>
-            <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
-          </li>
+          <Link href="/news">
+            <li className="flex gap-[5px] items-center cursor-pointer py-[18px]">
+              <span className="hover-effect">HOME</span>
+              <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
+            </li>
+          </Link>
+
           <li className="flex gap-[5px] items-center cursor-pointer">
             <span className="hover-effect">SHOP</span>
             <BsChevronDown className="text-[#969595] w-[13px] h-[13px]" />
